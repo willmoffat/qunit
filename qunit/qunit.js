@@ -137,7 +137,7 @@ var QUnit = {
 			}
 
 			try {
-				reset();
+				QUnit.reset();
 			} catch(e) {
 				fail("reset() failed, following Test " + name + ", exception and reset fn follows", e, reset);
 			}
@@ -305,7 +305,7 @@ var QUnit = {
 		if ( timeout && window.setTimeout ) {
 			config.timeout = window.setTimeout(function() {
 				QUnit.ok( false, "Test timed out" );
-				start();
+				QUnit.start();
 			}, timeout);
 		}
 	},
@@ -459,7 +459,7 @@ addEvent(window, "load", function() {
 		config.ajaxSettings = window.jQuery.ajaxSettings;
 	}
 
-	start();
+	QUnit.start();
 });
 
 function done() {
