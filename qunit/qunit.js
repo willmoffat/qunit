@@ -89,7 +89,6 @@ var QUnit = {
 		}
 
 		synchronize(function() {
-			QUnit.testStart( testName );
 
 			testEnvironment = extend({
 				setup: function() {},
@@ -98,6 +97,8 @@ var QUnit = {
 			if (testEnvironmentArg) {
 				extend(testEnvironment,testEnvironmentArg);
 			}
+
+			QUnit.testStart( testName, testEnvironment );
 
 			// allow utility functions to access the current test environment
 			QUnit.current_testEnvironment = testEnvironment;
