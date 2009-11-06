@@ -44,6 +44,7 @@ var QUnit = {
 	
 	// call on start of module test to prepend name to all tests
 	module: function module(name, testEnvironment) {
+		config.currentModule = name;
 
 		synchronize(function() {
 			if ( config.currentModule ) {
@@ -382,6 +383,9 @@ var config = {
 			GETParams.splice( i, 1 );
 			i--;
 			config.noglobals = true;
+		} else if ( GETParams[i].search('=') > -1 ) {
+			GETParams.splice( i, 1 );
+			i--;
 		}
 	}
 	
