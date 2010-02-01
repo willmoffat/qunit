@@ -373,7 +373,7 @@ var QUnit = {
 	// Logging callbacks
 	done: function(failures, total) {},
 	log: function(result, message) {},
-	testStart: function(name) {},
+	testStart: function(name, testEnvironment) {},
 	testDone: function(name, failures, total) {},
 	moduleStart: function(name, testEnvironment) {},
 	moduleDone: function(name, failures, total) {}
