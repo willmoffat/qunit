@@ -323,7 +323,7 @@ test("Functions.", function() {
     // f2 and f3 have the same code, formatted differently
     var f2 = function () {var i = 0;};
     var f3 = function () {
-        var i = 0 // this comment and no semicoma as difference
+        var i = 0; // this comment and no semicoma as difference
     };
 
     equals(QUnit.equiv(function() {}, function() {}), false, "Anonymous functions"); // exact source code
@@ -940,6 +940,23 @@ test("Complex Objects.", function() {
     equals(QUnit.equiv(diff5, diff1), false);
 });
 
+test("Objects, ignore extra properites", function() {
+    equals(QUnit.equiv({a:1}, {a:1,b:1}             ), false, 'Result has extra property');
+    equals(QUnit.equiv({a:1}, {a:1,b:1}, {skip:true}), true,  'Result has extra property which is ignored');
+    equals(QUnit.equiv({a:1}, {b:1},     {skip:true}), false, 'Property names must still match');
+    equals(QUnit.equiv(
+                {
+                    result:{answer:42}
+                },
+                {
+                    timestamp:990774000000,
+                    result:{answer:42, question:null}
+    
+                },
+                {skip:true}),
+                true, 'Multiple extra properties in result are ignored');
+    equals(QUnit.equiv([11,22,33],[11,22,33,44],{skip:true}),false, 'Extra array items are caught');
+});
 
 test("Complex Arrays.", function() {
 

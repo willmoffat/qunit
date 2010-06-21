@@ -830,7 +830,7 @@ QUnit.equiv = function () {
                 return true;
             },
 
-            "object": function (b, a) {
+            "object": function (b, a, opts) {
                 var i, j, loop;
                 var eq = true; // unless we can proove it
                 var aProperties = [], bProperties = []; // collection of strings
@@ -853,7 +853,7 @@ QUnit.equiv = function () {
                     }
                     aProperties.push(i); // collect a's properties
 
-                    if (!loop && ! innerEquiv(a[i], b[i])) {
+                    if (!loop && ! innerEquiv(a[i], b[i], opts)) {
                         eq = false;
                         break;
                     }
@@ -861,6 +861,9 @@ QUnit.equiv = function () {
 
                 callers.pop(); // unstack, we are done
                 parents.pop();
+
+                // skip any extra properties in b
+                if (opts && opts.skip) { return eq; }
 
                 for (i in b) {
                     bProperties.push(i); // collect b's properties
@@ -872,23 +875,14 @@ QUnit.equiv = function () {
         };
     }();
 
-    innerEquiv = function () { // can take multiple arguments
-        var args = Array.prototype.slice.apply(arguments);
-        if (args.length < 2) {
-            return true; // end transition
-        }
-
-        return (function (a, b) {
-            if (a === b) {
-                return true; // catch the most you can
-            } else if (a === null || b === null || typeof a === "undefined" || typeof b === "undefined" || hoozit(a) !== hoozit(b)) {
-                return false; // don't lose time with error prone cases
-            } else {
-                return bindCallbacks(a, callbacks, [b, a]);
-            }
-
-        // apply transition with (1..n) arguments
-        })(args[0], args[1]) && arguments.callee.apply(this, args.splice(1, args.length -1));
+    innerEquiv = function (a,b,opts) {
+      if (a === b) {
+        return true; // catch the most you can
+      } else if (a === null || b === null || typeof a === "undefined" || typeof b === "undefined" || hoozit(a) !== hoozit(b)) {
+        return false; // don't lose time with error prone cases
+      } else {
+        return bindCallbacks(a, callbacks, [b, a, opts]);
+      }
     };
 
     return innerEquiv;
