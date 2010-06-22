@@ -291,12 +291,14 @@ var QUnit = {
 		push(expected != actual, actual, expected, message);
 	},
 	
-	deepEqual: function(actual, expected, message) {
-		push(QUnit.equiv(actual, expected), actual, expected, message);
+	deepEqual: function(actual, expected, opts, message) {
+		if (!message && typeof opts==='string') { message=opts; opts=null; }
+		push(QUnit.equiv(expected, actual, opts), actual, expected, message);
 	},
 
-	notDeepEqual: function(actual, expected, message) {
-		push(!QUnit.equiv(actual, expected), actual, expected, message);
+	notDeepEqual: function(actual, expected, opts, message) {
+		if (!message && typeof opts==='string') { message=opts; opts=null; }
+		push(!QUnit.equiv(expected, actual, opts), actual, expected, message);
 	},
 
 	strictEqual: function(actual, expected, message) {
@@ -798,7 +800,7 @@ QUnit.equiv = function () {
                         typeof caller !== "undefined";
             },
 
-            "array": function (b, a) {
+            "array": function (b, a, opts) {
                 var i, j, loop;
                 var len;
 
@@ -821,7 +823,7 @@ QUnit.equiv = function () {
                             loop = true;//dont rewalk array
                         }
                     }
-                    if (!loop && ! innerEquiv(a[i], b[i])) {
+                    if (!loop && ! innerEquiv(a[i], b[i], opts)) {
                         parents.pop();
                         return false;
                     }

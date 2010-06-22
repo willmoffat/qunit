@@ -1,3 +1,14 @@
+test("check deepEquals wired up",function() {
+    var expected = [1,2,{name:'three'}];
+    var actual   = [1,2,{name:'three'}];
+    var actual2  = [1,2,{name:'three',val:3}];
+    deepEqual(    actual,  expected,              'options are optional');
+    deepEqual(    actual,  expected               /* message is optional */ );
+    deepEqual(    actual,  expected, {skip:true}, 'compare equivalent - skip has no effect');
+    notDeepEqual( actual2, expected,              'objects are different');
+    deepEqual(    actual2, expected, {skip:true}, 'skip extra value in actual');
+});
+
 test("module without setup/teardown (default)", function() {
 	expect(1);
 	ok(true);
